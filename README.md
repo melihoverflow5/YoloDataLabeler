@@ -21,7 +21,7 @@ By prioritizing local processing, our tool provides both the convenience of an i
 
 ## Getting Started
 
-## Windows Users
+### Windows Users
 
 ### Using the Pre-built Executable:
 1. Navigate to the `dist` folder.
