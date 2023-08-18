@@ -9,6 +9,16 @@ Welcome to the YOLO Data Labeler! Created by **Melih Taşkın**, this applicatio
 - **Image Resizing**: Need your images in a specific size? Simply provide the width and height, and the app will handle the resizing.
 - **Dataset Creation**: Automatically split your data into training, validation, and test sets. Just specify the destination folder and percentages for each set, and you're good to go!
 
+## 🛡️ Data Privacy & Security
+
+One of the distinct advantages of using this Data Labeler is that all labeling operations are **entirely local**. Unlike many online data labeling platforms, which may store, reuse, or even share your data, our tool ensures:
+
+1. **No Data Uploads**: Your data never leaves your machine.
+2. **Full User Control**: You have complete control over your labeled data, ensuring it remains confidential and proprietary.
+3. **No Hidden Agendas**: We don't have backend processes that process or store your data. Your intellectual property remains solely yours.
+
+By prioritizing local processing, our tool provides both the convenience of an intuitive labeling interface and the peace of mind that comes with top-notch data privacy and security.
+
 ## Getting Started
 
 ## Windows Users
