@@ -5,7 +5,12 @@ Welcome to the YOLO Data Labeler! Created by **Melih Taşkın**, this applicatio
 ## Features
 
 - **Easy Image Selection**: Just point to your images folder and get started.
-- **JSON Label Import**: Import object labels effortlessly using a simple JSON structure. For instance: `{"0": "cat", "1": "dog"}`.
+- **JSON Label Import**: Import object labels effortlessly using a simple JSON structure. For instance:
+  ```json
+  {
+     "0": "cat",
+     "1": "dog"
+  }
 - **Image Resizing**: Need your images in a specific size? Simply provide the width and height, and the app will handle the resizing.
 - **Dataset Creation**: Automatically split your data into training, validation, and test sets. Just specify the destination folder and percentages for each set, and you're good to go!
 
