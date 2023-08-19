@@ -6,6 +6,12 @@ from PyQt5.QtGui import QPixmap, QPainter, QPen, QImageReader, QIntValidator
 from PyQt5.QtCore import Qt, QRect
 import qtmodern.styles
 import qtmodern.windows
+
+from models.setup_model import SetupModel
+from presenters.setup_presenter import SetupPresenter
+from views.setup_view import SetupView
+
+
 # import qdarkstyle
 
 class SetupWindow(QWidget):
@@ -498,11 +504,21 @@ if __name__ == '__main__':
     # app.setStyleSheet(qss)
 
     # app.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
-    setup_window = SetupWindow()
-    setup_window.setWindowTitle("YOLO DATA LABELER BY MELIH TASKIN")
-    setup_window.show()
+    # setup_window = SetupWindow()
+    # setup_window.setWindowTitle("YOLO DATA LABELER BY MELIH TASKIN")
+    # setup_window.show()
 
-    setup_window_modern = qtmodern.windows.ModernWindow(setup_window)
-    setup_window_modern.show()
+    # setup_window_modern = qtmodern.windows.ModernWindow(setup_window)
+    # setup_window_modern.show()
+
+    model = SetupModel()
+    view = SetupView()
+    presenter = SetupPresenter(view, model)
+
+    view.setWindowTitle("YOLO DATA LABELER BY MELIH TASKIN")
+    view.show()
+
+    setup_presenter_modern = qtmodern.windows.ModernWindow(view)
+    setup_presenter_modern.show()
 
     sys.exit(app.exec_())
