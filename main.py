@@ -7,8 +7,11 @@ from PyQt5.QtCore import Qt, QRect
 import qtmodern.styles
 import qtmodern.windows
 
+from models.image_window_model import ImageWindowModel
 from models.setup_model import SetupModel
+from presenters.image_window_presenter import ImageWindowPresenter
 from presenters.setup_presenter import SetupPresenter
+from views.image_window_view import ImageWindowView
 from views.setup_view import SetupView
 
 
@@ -472,7 +475,7 @@ class ImageWidget(QWidget):
             self.next_button.setText("Exit")
             self.next_button.clicked.disconnect(self.load_next_image)  # Remove the old connection
             self.next_button.clicked.connect(self.close_app)  # Connect to the close function
-
+            self.view.next_button.repaint()
 
 
         self.image = self.load_and_scale_image(self.image_paths[self.current_image_index])
@@ -495,7 +498,7 @@ class ImageWidget(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    qtmodern.styles.dark(app)
+    # qtmodern.styles.dark(app)
     # def load_stylesheet(filename):
     #     with open(filename, "r") as f:
     #         return f.read()
@@ -518,7 +521,17 @@ if __name__ == '__main__':
     view.setWindowTitle("YOLO DATA LABELER BY MELIH TASKIN")
     view.show()
 
-    setup_presenter_modern = qtmodern.windows.ModernWindow(view)
-    setup_presenter_modern.show()
+    # setup_presenter_modern = qtmodern.windows.ModernWindow(view)
+    # setup_presenter_modern.show()
+
+    # Suppose you have a valid label_map dictionary here or you can pass None
+    # label_map = {
+    #     0: "Label 0",
+    #     1: "Label 1",
+    #     # ... add your own labels here or use a variable
+    # }
+    #
+    # win = ImageWindowView((800, 600), label_map)
+    # win.show()
 
     sys.exit(app.exec_())

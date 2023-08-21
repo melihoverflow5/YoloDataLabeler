@@ -1,5 +1,9 @@
 from PyQt5.QtWidgets import QMessageBox, QFileDialog
 
+from models.image_window_model import ImageWindowModel
+from presenters.image_window_presenter import ImageWindowPresenter
+from views.image_window_view import ImageWindowView
+
 
 class SetupPresenter:
     def __init__(self, view, model):
@@ -62,6 +66,8 @@ class SetupPresenter:
         else:
             self.view.dataset_options_group.hide()
             self.view.yaml_checkbox.setChecked(False)
+            self.model.dataset_folder_path = ""
+            self.view.dataset_folder_btn.setText("Select a folder")
 
     def start_processing(self):
         """
@@ -76,7 +82,13 @@ class SetupPresenter:
 
         self.create_yaml_file()
 
-        return
+        self.image_window_model = ImageWindowModel(image_paths, self.model.label_map, (train_percentage, val_percentage, test_percentage),
+                                 self.model.dataset_folder_path)
+        self.image_window_view = ImageWindowView((width, height), self.model.label_map)
+        self.image_window_presenter = ImageWindowPresenter(self.image_window_view, self.image_window_model)
+
+        self.image_window_presenter.start()
+        self.view.close()
 
     def import_json(self):
         """
