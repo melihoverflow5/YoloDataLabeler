@@ -4,7 +4,6 @@ from PyQt5.QtCore import Qt, QRect, pyqtSignal
 
 
 class ImageWindowView(QWidget):
-
     rectangle_added = pyqtSignal(object, int)
     rectangle_removed = pyqtSignal()
 
@@ -36,13 +35,25 @@ class ImageWindowView(QWidget):
         self.update_ui()
 
     def update_ui(self):
+        """
+        Updates the UI.
+        :return:
+        """
         self.adjust_window_size()
         self.position_elements()
 
     def adjust_window_size(self):
+        """
+        Adjusts the window size to fit the image.
+        :return:
+        """
         self.setFixedSize(self.image.size().width(), self.image.size().height() + 40)
 
     def position_elements(self):
+        """
+        Positions the elements in the window.
+        :return:
+        """
         self.next_button.resize(100, 30)
         self.next_button.move(self.image.width() - 110, self.image.height() + 5)
 
@@ -53,21 +64,41 @@ class ImageWindowView(QWidget):
         self.comboBox.move(self.image.width() - 390, self.image.height() + 5)
 
     def load_and_scale_image(self, path):
+        """
+        Loads and scales the image to fit the display size.
+        :param path:
+        :return:
+        """
         pixmap = QPixmap(path)
         scaled_pixmap = pixmap.scaled(self.display_size[0], self.display_size[1])
         return scaled_pixmap
 
     def set_image(self, path):
+        """
+        Sets the image to be displayed.
+        :param path:
+        :return:
+        """
         self.image = self.load_and_scale_image(path)
         self.update_ui()
         self.update()
 
     def add_rectangle(self, rectangle, label):
+        """
+        Adds a rectangle to the list of rectangles.
+        :param rectangle:
+        :param label:
+        :return:
+        """
         self.rectangle_added.emit(rectangle, self.comboBox.itemData(self.comboBox.currentIndex()))
         self.rectangles.append((rectangle, label))
         self.update()
 
     def remove_last_rectangle(self):
+        """
+        Removes the last rectangle from the list of rectangles.
+        :return:
+        """
         self.rectangle_removed.emit()
         if self.rectangles:
             self.rectangles.pop()
@@ -78,6 +109,11 @@ class ImageWindowView(QWidget):
             self.update()
 
     def paintEvent(self, event):
+        """
+        Paints the image and rectangles.
+        :param event:
+        :return:
+        """
         painter = QPainter(self)
         painter.drawPixmap(0, 0, self.image)
 
@@ -94,6 +130,11 @@ class ImageWindowView(QWidget):
         painter.end()
 
     def mousePressEvent(self, event):
+        """
+        Handles the mousePressEvent.
+        :param event:
+        :return:
+        """
         if event.button() == Qt.LeftButton and self.is_within_image_bounds(event.pos()):
             self.startPoint = event.pos()
             self.endPoint = event.pos()
@@ -101,11 +142,21 @@ class ImageWindowView(QWidget):
             self.update()
 
     def mouseMoveEvent(self, event):
+        """
+        Handles the mouseMoveEvent.
+        :param event:
+        :return:
+        """
         if self.isDrawing and self.is_within_image_bounds(event.pos()):
             self.endPoint = event.pos()
             self.update()
 
     def mouseReleaseEvent(self, event):
+        """
+        Handles the mouseReleaseEvent.
+        :param event:
+        :return:
+        """
         if self.isDrawing:
             self.endPoint = event.pos()
             self.isDrawing = False
@@ -116,4 +167,9 @@ class ImageWindowView(QWidget):
             self.endPoint = None
 
     def is_within_image_bounds(self, point):
+        """
+        Returns True if the point is within the image bounds.
+        :param point:
+        :return:
+        """
         return QRect(0, 0, self.image.width(), self.image.height()).contains(point)
