@@ -14,8 +14,8 @@ class SetupModel:
     def add_label(self, description):
         """
         Adds a label to the model and returns the display text to be added to the list widget
-        :param description:
-        :return:
+        :param description: The description of the label
+        :return: The display text to be added to the list widget
         """
         self.label_map[str(self.next_label)] = description if description else str(self.next_label)
         display_text = f"{self.next_label} - {description}" if description else str(self.next_label)
@@ -26,8 +26,8 @@ class SetupModel:
     def delete_label(self, label_number):
         """
         Deletes a label from the model
-        :param label_number:
-        :return:
+        :param label_number: The label number to be deleted
+        :return: None
         """
         if label_number in self.label_map:
             del self.label_map[label_number]
@@ -35,8 +35,8 @@ class SetupModel:
     def import_json_labels(self, file_path):
         """
         Imports labels from a JSON file
-        :param file_path:
-        :return:
+        :param file_path: The path of the JSON file
+        :return: None
         """
         with open(file_path, 'r') as file:
             data = json.load(file)
@@ -57,15 +57,15 @@ class SetupModel:
     def set_images_folder(self, folder):
         """
         Sets the path of the folder containing images
-        :param folder:
-        :return:
+        :param folder: The path of the folder containing images
+        :return: None
         """
         self.images_folder_path = folder
 
     def get_image_paths(self):
         """
         Returns a list of paths of images in the images folder
-        :return:
+        :return: A list of paths of images in the images folder
         """
         return [self.images_folder_path + '/' +
                 f for f in os.listdir(self.images_folder_path) if f.endswith(('.jpg', '.png'))]
@@ -73,15 +73,15 @@ class SetupModel:
     def set_dataset_folder(self, folder):
         """
         Sets the path of the folder containing images
-        :param folder:
-        :return:
+        :param folder: The path of the folder to create dataset.
+        :return: None
         """
         self.dataset_folder_path = folder
 
     def create_yaml_file(self):
         """
         Creates a YAML file in the dataset folder
-        :return:
+        :return: None
         """
         yaml_file_path = os.path.join(self.dataset_folder_path, 'dataset.yaml')
         with open(yaml_file_path, 'w') as yaml_file:

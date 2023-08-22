@@ -25,7 +25,7 @@ class SetupPresenter:
     def add_label(self):
         """
         Adds a label to the model and updates the view
-        :return:
+        :return: None
         """
         label_text = self.view.label_input.text().strip()
         if label_text:
@@ -35,8 +35,9 @@ class SetupPresenter:
             self.enable_start_button()
 
     def delete_label(self):
-        """"
+        """
         Deletes a label from the model and updates the view
+        :return: None
         """
         current_item = self.view.labels_list.currentItem()
         if current_item:
@@ -48,7 +49,7 @@ class SetupPresenter:
     def select_images_folder(self):
         """
         Opens a dialog to select a folder containing images
-        :return:
+        :return: None
         """
         folder_name = QFileDialog.getExistingDirectory(self.view, "Select a folder")
         if folder_name:
@@ -59,8 +60,8 @@ class SetupPresenter:
     def toggle_dataset_options(self, checked):
         """
         Shows or hides the dataset options group
-        :param checked:
-        :return:
+        :param checked: Whether the checkbox is checked
+        :return: None
         """
         if checked:
             self.view.dataset_options_group.show()
@@ -76,7 +77,7 @@ class SetupPresenter:
     def start_processing(self):
         """
         Starts the processing of images
-        :return:
+        :return: None
         """
         image_paths = self.get_validated_image_paths()
 
@@ -86,8 +87,9 @@ class SetupPresenter:
 
         self.create_yaml_file()
 
-        self.image_window_model = ImageWindowModel(image_paths, self.model.label_map, (train_percentage, val_percentage, test_percentage),
-                                 self.model.dataset_folder_path)
+        self.image_window_model = ImageWindowModel(
+            image_paths, self.model.label_map, (train_percentage, val_percentage, test_percentage),
+            self.model.dataset_folder_path)
         self.image_window_view = ImageWindowView((width, height), self.model.label_map)
         self.image_window_presenter = ImageWindowPresenter(self.image_window_view, self.image_window_model)
 
@@ -97,7 +99,7 @@ class SetupPresenter:
     def import_json(self):
         """
         Opens a dialog to select a JSON file containing labels
-        :return:
+        :return: None
         """
         file_name = QFileDialog.getOpenFileName(self.view, "Open JSON", "", "JSON Files (*.json);;All Files (*)")[0]
         if file_name:
@@ -110,7 +112,7 @@ class SetupPresenter:
     def select_dataset_folder(self):
         """
         Opens a dialog to select a folder to save the dataset
-        :return:
+        :return: None
         """
         dataset_folder = QFileDialog.getExistingDirectory(self.view, "Select a dataset folder")
         if dataset_folder:
@@ -120,9 +122,21 @@ class SetupPresenter:
 
     # Helper methods
     def show_error(self, message):
+        """
+        Shows an error message
+        :param message: The message to show
+        :return: None
+        """
         QMessageBox.critical(self.view, "Error", message)
 
     def validate_percentage_total(self, train, val, test):
+        """
+        Validates that the percentages add up to 100
+        :param train: Percentage of training images
+        :param val: Percentage of validation images
+        :param test: Percentage of test images
+        :return: True if the percentages add up to 100, False otherwise
+        """
         if train + val + test != 100:
             self.show_error("Train, validation, and test percentages must add up to 100.")
             return False
@@ -131,7 +145,7 @@ class SetupPresenter:
     def get_validated_image_paths(self):
         """
         Returns a list of paths of images in the images folder
-        :return:
+        :return: A list of paths of images in the images folder
         """
         image_paths = self.model.get_image_paths()
 
@@ -145,7 +159,7 @@ class SetupPresenter:
     def get_resolution(self):
         """
         Returns the resolution of the images
-        :return:
+        :return: The resolution of the images
         """
         try:
             width = int(self.view.width_input.text()) if self.view.width_input.text() else 800
@@ -156,6 +170,10 @@ class SetupPresenter:
         return width, height
 
     def get_percentages(self):
+        """
+        Returns the percentages of training, validation, and test images
+        :return: The percentages of training, validation, and test images
+        """
         train_percentage = int(
             self.view.train_percentage_input.text()) if self.view.train_percentage_input.text() else 70
         val_percentage = int(self.view.val_percentage_input.text()) if self.view.val_percentage_input.text() else 15
@@ -171,7 +189,7 @@ class SetupPresenter:
     def enable_start_button(self):
         """
         Enables the start button
-        :return:
+        :return: None
         """
         if self.model.images_folder_path == "" or self.model.label_map == {}:
             self.view.start_button.setEnabled(False)
@@ -187,7 +205,7 @@ class SetupPresenter:
     def create_yaml_file(self):
         """
         Creates a YAML file in the dataset folder
-        :return:
+        :return: None
         """
         if self.view.yaml_checkbox.isChecked():
             if self.model.dataset_folder_path == "":
