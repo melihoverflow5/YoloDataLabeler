@@ -1,0 +1,3 @@
+PyQt5~=5.15.9
+qtmodern~=0.2.0
+setuptools~=68.0.0
