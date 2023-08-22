@@ -1,8 +1,10 @@
 import sys
 from PyQt5.QtWidgets import QApplication
+
 from models.setup_model import SetupModel
 from presenters.setup_presenter import SetupPresenter
 from views.setup_view import SetupView
+
 import qtmodern.styles
 import qtmodern.windows
 

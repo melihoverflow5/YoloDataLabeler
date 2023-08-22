@@ -35,14 +35,14 @@ class ImageWindowView(QWidget):
         for key, value in self.label_map.items():
             self.comboBox.addItem(value, userData=key)
 
-        self.checkNextButtonStatus()
-        self.checkDiscardButtonStatus()
+        self.check_next_button_status()
+        self.check_discard_button_status()
         self.update_ui()
 
     def update_ui(self):
         """
         Updates the UI.
-        :return:
+        :return: None
         """
         self.adjust_window_size()
         self.position_elements()
@@ -50,14 +50,14 @@ class ImageWindowView(QWidget):
     def adjust_window_size(self):
         """
         Adjusts the window size to fit the image.
-        :return:
+        :return: None
         """
         self.setFixedSize(self.image.size().width(), self.image.size().height() + 40)
 
     def position_elements(self):
         """
         Positions the elements in the window.
-        :return:
+        :return: None
         """
         self.next_button.resize(100, 30)
         self.next_button.move(self.image.width() - 110, self.image.height() + 5)
@@ -74,8 +74,8 @@ class ImageWindowView(QWidget):
     def load_and_scale_image(self, path):
         """
         Loads and scales the image to fit the display size.
-        :param path:
-        :return:
+        :param path: Path to the image
+        :return: Scaled image
         """
         pixmap = QPixmap(path)
         scaled_pixmap = pixmap.scaled(self.display_size[0], self.display_size[1])
@@ -84,8 +84,8 @@ class ImageWindowView(QWidget):
     def set_image(self, path):
         """
         Sets the image to be displayed.
-        :param path:
-        :return:
+        :param path: Path to the image
+        :return: None
         """
         self.image = self.load_and_scale_image(path)
         self.update_ui()
@@ -94,20 +94,20 @@ class ImageWindowView(QWidget):
     def add_rectangle(self, rectangle, label):
         """
         Adds a rectangle to the list of rectangles.
-        :param rectangle:
-        :param label:
-        :return:
+        :param rectangle: Rectangle Object
+        :param label: Label string
+        :return: None
         """
         self.rectangle_added.emit(rectangle, self.comboBox.itemData(self.comboBox.currentIndex()))
         self.rectangles.append((rectangle, label))
-        self.checkNextButtonStatus()
-        self.checkDiscardButtonStatus()
+        self.check_next_button_status()
+        self.check_discard_button_status()
         self.update()
 
     def remove_last_rectangle(self):
         """
         Removes the last rectangle from the list of rectangles.
-        :return:
+        :return: None
         """
         self.rectangle_removed.emit()
         if self.rectangles:
@@ -116,15 +116,15 @@ class ImageWindowView(QWidget):
             # Reset the temporary drawing points
             self.startPoint = None
             self.endPoint = None
-            self.checkNextButtonStatus()
-            self.checkDiscardButtonStatus()
+            self.check_next_button_status()
+            self.check_discard_button_status()
             self.update()
 
     def paintEvent(self, event):
         """
         Paints the image and rectangles.
-        :param event:
-        :return:
+        :param event: Event object
+        :return: None
         """
         painter = QPainter(self)
         painter.drawPixmap(0, 0, self.image)
@@ -144,8 +144,8 @@ class ImageWindowView(QWidget):
     def mousePressEvent(self, event):
         """
         Handles the mousePressEvent.
-        :param event:
-        :return:
+        :param event: Event object
+        :return: None
         """
         if event.button() == Qt.LeftButton and self.is_within_image_bounds(event.pos()):
             self.startPoint = event.pos()
@@ -156,8 +156,8 @@ class ImageWindowView(QWidget):
     def mouseMoveEvent(self, event):
         """
         Handles the mouseMoveEvent.
-        :param event:
-        :return:
+        :param event: Event object
+        :return: None
         """
         if self.isDrawing and self.is_within_image_bounds(event.pos()):
             self.endPoint = event.pos()
@@ -166,8 +166,8 @@ class ImageWindowView(QWidget):
     def mouseReleaseEvent(self, event):
         """
         Handles the mouseReleaseEvent.
-        :param event:
-        :return:
+        :param event: Event object
+        :return: None
         """
         if self.isDrawing:
             self.endPoint = event.pos()
@@ -178,20 +178,20 @@ class ImageWindowView(QWidget):
             self.startPoint = None
             self.endPoint = None
 
-    def checkNextButtonStatus(self):
+    def check_next_button_status(self):
         """
         Checks the status of the next button.
-        :return:
+        :return: None
         """
         if self.rectangles:
             self.next_button.setEnabled(True)
         else:
             self.next_button.setEnabled(False)
 
-    def checkDiscardButtonStatus(self):
+    def check_discard_button_status(self):
         """
         Checks the status of the next button.
-        :return:
+        :return: None
         """
         if self.rectangles:
             self.discard_button.setEnabled(False)
@@ -201,7 +201,7 @@ class ImageWindowView(QWidget):
     def is_within_image_bounds(self, point):
         """
         Returns True if the point is within the image bounds.
-        :param point:
-        :return:
+        :param point: QPoint object
+        :return: True if the point is within the image bounds
         """
         return QRect(0, 0, self.image.width(), self.image.height()).contains(point)
