@@ -15,7 +15,7 @@ class ImageWindowModel:
         self.dataset_folder = dataset_folder
         self.rectangles = []
         self.save_path = os.path.dirname(os.path.dirname(self.get_current_image_path()))
-        # self.tmp_path = os.path.join(os.path.dirname(self.get_current_image_path()), "tmp")
+        self.tmp_path = os.path.join(os.path.dirname(self.get_current_image_path()), "tmp")
         self.tmp_path = tempfile.mkdtemp()
 
     def get_next_image_path(self):
