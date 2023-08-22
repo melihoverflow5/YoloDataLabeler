@@ -24,6 +24,9 @@ class ImageWindowView(QWidget):
         # Add Next button
         self.next_button = QPushButton("Next Image", self)
 
+        # Add Discard button
+        self.discard_button = QPushButton("Discard Image", self)
+
         # Add Undo button
         self.undo_button = QPushButton("Undo", self)
 
@@ -32,6 +35,8 @@ class ImageWindowView(QWidget):
         for key, value in self.label_map.items():
             self.comboBox.addItem(value, userData=key)
 
+        self.checkNextButtonStatus()
+        self.checkDiscardButtonStatus()
         self.update_ui()
 
     def update_ui(self):
@@ -57,11 +62,14 @@ class ImageWindowView(QWidget):
         self.next_button.resize(100, 30)
         self.next_button.move(self.image.width() - 110, self.image.height() + 5)
 
+        self.discard_button.resize(100, 30)
+        self.discard_button.move(self.image.width() - 220, self.image.height() + 5)
+
         self.undo_button.resize(100, 30)
-        self.undo_button.move(self.image.width() - 280, self.image.height() + 5)
+        self.undo_button.move(125, self.image.height() + 5)
 
         self.comboBox.resize(100, 30)
-        self.comboBox.move(self.image.width() - 390, self.image.height() + 5)
+        self.comboBox.move(15, self.image.height() + 5)
 
     def load_and_scale_image(self, path):
         """
@@ -92,6 +100,8 @@ class ImageWindowView(QWidget):
         """
         self.rectangle_added.emit(rectangle, self.comboBox.itemData(self.comboBox.currentIndex()))
         self.rectangles.append((rectangle, label))
+        self.checkNextButtonStatus()
+        self.checkDiscardButtonStatus()
         self.update()
 
     def remove_last_rectangle(self):
@@ -106,6 +116,8 @@ class ImageWindowView(QWidget):
             # Reset the temporary drawing points
             self.startPoint = None
             self.endPoint = None
+            self.checkNextButtonStatus()
+            self.checkDiscardButtonStatus()
             self.update()
 
     def paintEvent(self, event):
@@ -165,6 +177,26 @@ class ImageWindowView(QWidget):
                 self.add_rectangle(QRect(self.startPoint, self.endPoint), current_label)
             self.startPoint = None
             self.endPoint = None
+
+    def checkNextButtonStatus(self):
+        """
+        Checks the status of the next button.
+        :return:
+        """
+        if self.rectangles:
+            self.next_button.setEnabled(True)
+        else:
+            self.next_button.setEnabled(False)
+
+    def checkDiscardButtonStatus(self):
+        """
+        Checks the status of the next button.
+        :return:
+        """
+        if self.rectangles:
+            self.discard_button.setEnabled(False)
+        else:
+            self.discard_button.setEnabled(True)
 
     def is_within_image_bounds(self, point):
         """

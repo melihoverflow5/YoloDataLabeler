@@ -1,6 +1,6 @@
 import os
 
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QMessageBox
 
 
 class ImageWindowPresenter:
@@ -14,6 +14,7 @@ class ImageWindowPresenter:
         # Connect view signals to presenter methods
         self.view.next_button.clicked.connect(self.handle_next_image)
         self.view.undo_button.clicked.connect(self.handle_undo_last_rectangle)
+        self.view.discard_button.clicked.connect(self.handle_discard_image)
 
         self.view.rectangle_added.connect(self.on_rectangle_added)
         self.view.rectangle_removed.connect(self.on_rectangle_removed)
@@ -45,11 +46,22 @@ class ImageWindowPresenter:
         if next_image_path:
             self.view.set_image(next_image_path)
             self.view.rectangles = []
+            self.view.checkNextButtonStatus()
+            self.view.checkDiscardButtonStatus()
+        self.create_exit_button()
 
-        if self.model.is_last_image():
-            self.view.next_button.setText("Exit")
-            self.view.next_button.clicked.disconnect(self.handle_next_image)
-            self.view.next_button.clicked.connect(self.exit_app)
+    def handle_discard_image(self):
+        """
+        Handles the discard_image signal from the view.
+        :return:
+        """
+        next_image_path = self.model.get_next_image_path()
+        if next_image_path:
+            self.view.set_image(next_image_path)
+            self.view.rectangles = []
+            self.view.checkNextButtonStatus()
+            self.view.checkDiscardButtonStatus()
+        self.create_exit_button()
 
     def save(self):
         """
@@ -95,6 +107,20 @@ class ImageWindowPresenter:
         self.save_images(images_path)
         self.model.save_calculations(calculations, labels_path)
 
+    def create_exit_button(self):
+        """
+        Creates the exit button if the current image is the last image.
+        :return:
+        """
+        if self.model.is_last_image():
+            self.view.discard_button.setText("Discard and Exit")
+            self.view.discard_button.clicked.disconnect()
+            self.view.discard_button.clicked.connect(lambda: self.exit_app(True))
+        if self.model.is_last_image():
+            self.view.next_button.setText("Exit")
+            self.view.next_button.clicked.disconnect()
+            self.view.next_button.clicked.connect(self.exit_app)
+
     def save_images(self, path):
         """
         Saves the current image to the given path.
@@ -106,12 +132,33 @@ class ImageWindowPresenter:
 
         self.view.image.save(filepath)
 
-    def exit_app(self):
+    def exit_app(self, discard=False):
         """
-        Exits the application.
+        Exits the application with splitting the dataset.
         :return:
         """
-        self.save()
+        if not discard:
+            self.save()
+
+        tmp_images = self.model.get_tmp_images()
+        tmp_labels = self.model.get_tmp_labels()
+
+        x, y = self.model.calculate_percentages()
+
+        train_images, test_images, train_labels, test_labels = self.model.split_dataset(tmp_images, tmp_labels, x)
+        if not train_images:
+            self.show_error("Your labels are not valid for stratified data splitting. "
+                            "You can manually split your data.")
+            self.model.move_to_dataset_folder_for_exception(tmp_images, tmp_labels)
+        val_images, test_images, val_labels, test_labels = self.model.split_dataset(test_images, test_labels, y)
+        if not val_images:
+            self.show_error(
+                "Your labels are not valid for stratified data splitting. You can manually split your data.")
+            self.model.move_to_dataset_folder_for_exception(tmp_images, tmp_labels)
+        else:
+            self.model.move_to_dataset_folder(train_images, train_labels, val_images,
+                                              val_labels, test_images, test_labels)
+        self.model.clear_temp()
         QApplication.quit()
 
     def start(self):
@@ -121,3 +168,11 @@ class ImageWindowPresenter:
         """
         self.load_initial_image()
         self.view.show()
+
+    def show_error(self, message):
+        """
+        Shows an error message.
+        :param message:
+        :return:
+        """
+        QMessageBox.critical(self.view, "Error", message)

@@ -32,6 +32,7 @@ class SetupPresenter:
             display_text = self.model.add_label(label_text)
             self.view.labels_list.addItem(display_text)
             self.view.label_input.clear()
+            self.enable_start_button()
 
     def delete_label(self):
         """"
@@ -42,6 +43,7 @@ class SetupPresenter:
             label_number = int(current_item.text().split(" - ")[0])
             self.model.delete_label(label_number)
             self.view.labels_list.takeItem(self.view.labels_list.row(current_item))
+            self.enable_start_button()
 
     def select_images_folder(self):
         """
@@ -52,7 +54,7 @@ class SetupPresenter:
         if folder_name:
             self.model.set_images_folder(folder_name)
             self.view.folder_label.setText(folder_name)
-            self.view.start_button.setEnabled(True)
+            self.enable_start_button()
 
     def toggle_dataset_options(self, checked):
         """
@@ -68,6 +70,8 @@ class SetupPresenter:
             self.view.yaml_checkbox.setChecked(False)
             self.model.dataset_folder_path = ""
             self.view.dataset_folder_btn.setText("Select a folder")
+
+        self.enable_start_button()
 
     def start_processing(self):
         """
@@ -101,6 +105,7 @@ class SetupPresenter:
             self.view.labels_list.clear()
             for key, value in self.model.label_map.items():
                 self.view.labels_list.addItem(f"{key} - {value}")
+            self.enable_start_button()
 
     def select_dataset_folder(self):
         """
@@ -111,6 +116,7 @@ class SetupPresenter:
         if dataset_folder:
             self.model.set_dataset_folder(dataset_folder)
             self.view.dataset_folder_btn.setText(dataset_folder)
+            self.enable_start_button()
 
     # Helper methods
     def show_error(self, message):
@@ -161,6 +167,22 @@ class SetupPresenter:
             return
 
         return train_percentage, val_percentage, test_percentage
+
+    def enable_start_button(self):
+        """
+        Enables the start button
+        :return:
+        """
+        if self.model.images_folder_path == "" or self.model.label_map == {}:
+            self.view.start_button.setEnabled(False)
+        else:
+            if self.view.dataset_checkbox.isChecked():
+                if self.model.dataset_folder_path == "":
+                    self.view.start_button.setEnabled(False)
+                else:
+                    self.view.start_button.setEnabled(True)
+            else:
+                self.view.start_button.setEnabled(True)
 
     def create_yaml_file(self):
         """
