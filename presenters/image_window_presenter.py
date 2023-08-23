@@ -72,7 +72,7 @@ class ImageWindowPresenter:
         else:
             self.model.create_save_paths()
             self.save_images(os.path.join(self.model.save_path, "scaled_images"))
-            self.model.save_calculations(self.model.get_calculations(), os.path.join(self.model.save_path, "labels"))
+            self.model.save_calculations(self.model.get_calculations(self.view.image), os.path.join(self.model.save_path, "labels"))
 
     def handle_undo_last_rectangle(self):
         """
@@ -101,7 +101,7 @@ class ImageWindowPresenter:
 
         self.model.create_tmp_paths()
 
-        calculations = self.model.get_calculations()
+        calculations = self.model.get_calculations(self.view.image)
 
         self.save_images(images_path)
         self.model.save_calculations(calculations, labels_path)
@@ -139,24 +139,25 @@ class ImageWindowPresenter:
         if not discard:
             self.save()
 
-        tmp_images = self.model.get_tmp_images()
-        tmp_labels = self.model.get_tmp_labels()
+        if self.model.is_create_dataset():
+            tmp_images = self.model.get_tmp_images()
+            tmp_labels = self.model.get_tmp_labels()
 
-        x, y = self.model.calculate_percentages()
+            x, y = self.model.calculate_percentages()
 
-        train_images, test_images, train_labels, test_labels = self.model.split_dataset(tmp_images, tmp_labels, x)
-        if not train_images:
-            self.show_error("Your labels are not valid for stratified data splitting. "
-                            "You can manually split your data.")
-            self.model.move_to_dataset_folder_for_exception(tmp_images, tmp_labels)
-        val_images, test_images, val_labels, test_labels = self.model.split_dataset(test_images, test_labels, y)
-        if not val_images:
-            self.show_error(
-                "Your labels are not valid for stratified data splitting. You can manually split your data.")
-            self.model.move_to_dataset_folder_for_exception(tmp_images, tmp_labels)
-        else:
-            self.model.move_to_dataset_folder(train_images, train_labels, val_images,
-                                              val_labels, test_images, test_labels)
+            train_images, test_images, train_labels, test_labels = self.model.split_dataset(tmp_images, tmp_labels, x)
+            if not train_images:
+                self.show_error("Your labels are not valid for stratified data splitting. "
+                                "You can manually split your data.")
+                self.model.move_to_dataset_folder_for_exception(tmp_images, tmp_labels)
+            val_images, test_images, val_labels, test_labels = self.model.split_dataset(test_images, test_labels, y)
+            if not val_images:
+                self.show_error(
+                    "Your labels are not valid for stratified data splitting. You can manually split your data.")
+                self.model.move_to_dataset_folder_for_exception(tmp_images, tmp_labels)
+            else:
+                self.model.move_to_dataset_folder(train_images, train_labels, val_images,
+                                                  val_labels, test_images, test_labels)
         self.model.clear_temp()
         QApplication.quit()
 

@@ -68,17 +68,17 @@ class ImageWindowModel:
         if self.rectangles:
             self.rectangles.pop()
 
-    def get_calculations(self):
+    def get_calculations(self, image):
         """
         Returns the calculations of the rectangles.
         :return: The calculations of the rectangles.
         """
         outputs = []
         for rectangle, label in self.rectangles:
-            x_center = ((rectangle.topLeft().x() + rectangle.bottomRight().x()) / 2)
-            y_center = ((rectangle.topLeft().y() + rectangle.bottomRight().y()) / 2)
-            width = (rectangle.bottomRight().x() - rectangle.topLeft().x())
-            height = (rectangle.bottomRight().y() - rectangle.topLeft().y())
+            x_center = ((rectangle.topLeft().x() + rectangle.bottomRight().x()) / 2) / image.width()
+            y_center = ((rectangle.topLeft().y() + rectangle.bottomRight().y()) / 2) / image.height()
+            width = (rectangle.bottomRight().x() - rectangle.topLeft().x()) / image.width()
+            height = (rectangle.bottomRight().y() - rectangle.topLeft().y()) / image.height()
 
             output = f"{label} {x_center} {y_center} {width} {height}"
             outputs.append(output)
