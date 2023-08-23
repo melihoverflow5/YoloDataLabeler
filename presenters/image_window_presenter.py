@@ -1,5 +1,4 @@
 import os
-
 from PyQt5.QtWidgets import QApplication, QMessageBox
 
 
@@ -22,23 +21,23 @@ class ImageWindowPresenter:
     def on_rectangle_added(self, rectangle, label):
         """
         Handles the rectangle_added signal from the view.
-        :param rectangle:
-        :param label:
-        :return:
+        :param rectangle: Rectangle object
+        :param label: Label string
+        :return: None
         """
         self.model.save_rectangle(rectangle, label)
 
     def on_rectangle_removed(self):
         """
         Handles the rectangle_removed signal from the view.
-        :return:
+        :return: None
         """
         self.model.undo_last_rectangle()
 
     def handle_next_image(self):
         """
         Handles the next_image signal from the view.
-        :return:
+        :return: None
         """
         self.save()
 
@@ -46,27 +45,27 @@ class ImageWindowPresenter:
         if next_image_path:
             self.view.set_image(next_image_path)
             self.view.rectangles = []
-            self.view.checkNextButtonStatus()
-            self.view.checkDiscardButtonStatus()
+            self.view.check_next_button_status()
+            self.view.check_discard_button_status()
         self.create_exit_button()
 
     def handle_discard_image(self):
         """
         Handles the discard_image signal from the view.
-        :return:
+        :return: None
         """
         next_image_path = self.model.get_next_image_path()
         if next_image_path:
             self.view.set_image(next_image_path)
             self.view.rectangles = []
-            self.view.checkNextButtonStatus()
-            self.view.checkDiscardButtonStatus()
+            self.view.check_next_button_status()
+            self.view.check_discard_button_status()
         self.create_exit_button()
 
     def save(self):
         """
         Saves the current image and rectangle calculations.
-        :return:
+        :return: None
         """
         if self.model.is_create_dataset():
             self.save_tmp()
@@ -78,14 +77,14 @@ class ImageWindowPresenter:
     def handle_undo_last_rectangle(self):
         """
         Handles the undo_last_rectangle signal from the view.
-        :return:
+        :return: None
         """
         self.view.remove_last_rectangle()
 
     def load_initial_image(self):
         """
         Loads the initial image from the model.
-        :return:
+        :return: None
         """
         initial_image_path = self.model.get_current_image_path()
         if initial_image_path:
@@ -94,7 +93,7 @@ class ImageWindowPresenter:
     def save_tmp(self):
         """
         Saves the current image and rectangle calculations to a temporary folder.
-        :return:
+        :return: None
         """
         tmp_path = self.model.tmp_path
         images_path = os.path.join(tmp_path, "images")
@@ -110,7 +109,7 @@ class ImageWindowPresenter:
     def create_exit_button(self):
         """
         Creates the exit button if the current image is the last image.
-        :return:
+        :return: None
         """
         if self.model.is_last_image():
             self.view.discard_button.setText("Discard and Exit")
@@ -124,8 +123,8 @@ class ImageWindowPresenter:
     def save_images(self, path):
         """
         Saves the current image to the given path.
-        :param path:
-        :return:
+        :param path: Path to save the images
+        :return: None
         """
         filename = self.model.get_filename(".jpg")
         filepath = os.path.join(path, filename)
@@ -135,7 +134,7 @@ class ImageWindowPresenter:
     def exit_app(self, discard=False):
         """
         Exits the application with splitting the dataset.
-        :return:
+        :return: None
         """
         if not discard:
             self.save()
@@ -164,7 +163,7 @@ class ImageWindowPresenter:
     def start(self):
         """
         Starts the presenter.
-        :return:
+        :return: None
         """
         self.load_initial_image()
         self.view.show()
@@ -172,7 +171,7 @@ class ImageWindowPresenter:
     def show_error(self, message):
         """
         Shows an error message.
-        :param message:
-        :return:
+        :param message: Error message
+        :return: None
         """
         QMessageBox.critical(self.view, "Error", message)

@@ -1,77 +1,80 @@
 # YOLO Data Labeler
 
-Welcome to the YOLO Data Labeler! Created by **Melih Taşkın**, this application offers an intuitive interface for labeling datasets specifically tailored for the YOLO model. It streamlines the process of setting up your YOLO dataset, so you can focus on building and refining your models.
+Designed with precision by **Melih Taşkın**, the YOLO Data Labeler is more than a tool—it's a craft echoing the artistry and innovation reminiscent of the grandeur of Ottoman engineering and the vibrant bazaars of Istanbul.
 
-## Features
+## 🌠 Remarkable Features
 
-- **Easy Image Selection**: Just point to your images folder and get started.
-- **JSON Label Import**: Import object labels effortlessly using a simple JSON structure. For instance:
-  ```json
-  {
-     "0": "cat",
-     "1": "dog"
-  }
-- **Image Resizing**: Need your images in a specific size? Simply provide the width and height, and the app will handle the resizing.
-- **Dataset Creation**: Automatically split your data into training, validation, and test sets. Just specify the destination folder and percentages for each set, and you're good to go!
+- **Effortless Image Selection**: Just as travelers navigate the mesmerizing lanes of Cappadocia, effortlessly guide your way through the dataset with our intuitive interface.
+  
+- **Instantaneous Label Imports**:
 
-## 🛡️ Data Privacy & Security
+    ```plaintext
+    {
+       "0": "cat",
+       "1": "dog"
+    }
+    ```
 
-One of the distinct advantages of using this Data Labeler is that all labeling operations are **entirely local**. Unlike many online data labeling platforms, which may store, reuse, or even share your data, our tool ensures:
+- **Dynamic Image Resizing**: Set your requirements and let the application do its magic, reminiscent of the fluid designs seen in Turkish mosaics.
+  
+- **Strategic Dataset Segmentation**: Employing the power of scikit-learn's split_train_test, carve out your dataset with precision, ensuring each category is well-represented.
 
-1. **No Data Uploads**: Your data never leaves your machine.
-2. **Full User Control**: You have complete control over your labeled data, ensuring it remains confidential and proprietary.
-3. **No Hidden Agendas**: We don't have backend processes that process or store your data. Your intellectual property remains solely yours.
+- **Intelligent Design**: Should challenges arise, like when a label has fewer than three instances, our tool promptly alerts you, echoing the foresight of great Turkish strategists.
 
-By prioritizing local processing, our tool provides both the convenience of an intuitive labeling interface and the peace of mind that comes with top-notch data privacy and security.
+## 🏰 Sovereignty Over Your Data
 
-## Getting Started
+- **Offline Operation**: All activities are local—echoing the impenetrable fortresses guarding Anatolia's rich history.
+  
+- **Absolute Control**: Your data remains untouched and unshared, echoing the principles of integrity deeply rooted in Turkish customs.
 
-### Windows Users
+- **Transparent Mechanics**: No secret alleys or under-the-table transactions. Your data, your empire.
 
-### Using the Pre-built Executable:
-1. Navigate to the `dist` folder.
-2. Double-click on the provided `.exe` file to launch the application.
+- **A Truly Independent Tool**: Unlike mainstream platforms that might use your data, with YOLO Data Labeler, you're in the Grand Bazaar, and the choice of trade is entirely yours.
 
-### Using Python:
-1. Ensure you have Python installed on your machine.
-2. Navigate to the root directory of the cloned repository.
-3. Run the following command:
-   
-   ```bash
-   python main.py
+## 🔧 Getting Started
 
-### Unix/Mac Users
+### Windows Connoisseurs
 
-#### Using Python:
-1. Ensure you have Python installed on your machine.
-2. Navigate to the root directory of the cloned repository.
-3. Run the following command:
-   
+#### Direct Expedition:
+
+- Acquire the `.exe` from the [Releases section](https://github.com/melihoverflow5/YoloDataLabeler/releases).
+
+#### Crafting Your Own Path:
+
     ```bash
+    git clone <repository-url>
+    cd <repository-name>
+    pip install -r requirements.txt
     python main.py
+    ```
 
-#### Building a `.dmg` for MacOS:
+### Unix/Mac Trailblazers
 
-1. Ensure you have `py2app` installed. If not, install it using `pip`:
-   
-    ```bash
-    pip install py2app
-3. Navigate to the root directory of the cloned repository.
-4. Run the following command to create a `.dmg` file:
+Your unique journey awaits. While pre-built expeditions for Unix/Mac are on the horizon, the spirit of discovery is at the core:
 
     ```bash
-    python setup.py py2app
-6. Once built, navigate to the `dist` directory and you'll find your `.dmg` file. Open it to run the application or move it to your Applications folder.
+    git clone <repository-url>
+    cd <repository-name>
+    pip install -r requirements.txt
+    python main.py
+    ```
+    
+## 🛠️ Code Quality Assurance
 
-## Contributions
+To ensure the highest standards of coding, our project is integrated with [SonarCloud](https://sonarcloud.io/). Not only does this exhibit our commitment to producing top-notch software, but it also provides a clear overview of our code's health and maintainability.
 
-Feedback, bug reports, and pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Dive deep into our code's quality metrics and analysis on [SonarCloud's project overview](https://sonarcloud.io/project/overview?id=melihoverflow5_YoloDataLabeler).
 
-## License
+## 🌍 Join Our Caravan
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+We value every comment, critique, and contribution. Thinking of monumental changes? Begin a dialogue with an issue.
 
-## Acknowledgments
+## 📜 Scrolls and Writings
 
-- Special thanks to the open-source community and the YOLO model creators.
-- A very special thank you to **Ahmet Koyuncu** for his invaluable support and contributions to this project.
+Guarded by the GNU General Public License, delve into the [LICENSE](LICENSE) for the intricacies.
+
+## 🙌 Gratitude to the Visionaries
+
+- A nod to the vast expanse of the open-source realm and the trailblazers of the YOLO model.
+- Our journey is brighter thanks to **Ahmet Koyuncu**, a guiding star in this venture.
+
