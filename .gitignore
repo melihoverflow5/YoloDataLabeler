@@ -5,6 +5,8 @@ __pycache__/
 *$py.class
 /target
 Yolo Data Labeler.spec
+/build
+/dist
 # C extensions
 *.so
 
